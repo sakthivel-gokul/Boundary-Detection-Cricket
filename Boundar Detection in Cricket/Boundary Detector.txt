@@ -1,0 +1,22 @@
+import serial
+import time
+
+def main():
+    # Connect to the Arduino (replace 'COM3' with the appropriate port for your system)
+    arduino = serial.Serial(port='COM3', baudrate=9600, timeout=1)
+    print("Connected to Arduino. Listening for boundary detections...")
+
+    while True:
+        if arduino.in_waiting > 0:  # Check if data is available from the Arduino
+            data = arduino.readline().decode('utf-8').strip()  # Read and decode the data
+            if data == "Boundary Detected":
+                print(f"Boundary detected at {time.strftime('%Y-%m-%d %H:%M:%S')}")
+                log_boundary_event(time.strftime('%Y-%m-%d %H:%M:%S'))
+
+def log_boundary_event(timestamp):
+    """Logs the boundary detection event to a file."""
+    with open("boundary_log.txt", "a") as file:
+        file.write(f"Boundary detected at {timestamp}\n")
+
+if __name__ == "__main__":
+    main()

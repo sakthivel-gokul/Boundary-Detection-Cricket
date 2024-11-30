@@ -1,0 +1,14 @@
+#define IR_PIN 2
+
+void setup() {
+  pinMode(IR_PIN, INPUT);
+  Serial.begin(9600);  // Initialize serial communication
+}
+
+void loop() {
+  int sensorState = digitalRead(IR_PIN);
+  if (sensorState == LOW) {  // Ball detected (LOW means the IR sensor is blocked)
+    Serial.println("Boundary Detected");  // Send message to Python
+    delay(1000);  // Add delay to prevent duplicate detections
+  }
+}
